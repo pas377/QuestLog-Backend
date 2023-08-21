@@ -1,0 +1,150 @@
+@startuml
+
+abstract Attachable {
+- name : String
+- description : String
+
++ Attachable()
++ Attach()
++ get/set
+}
+
+class AutoSummary {
+- to be implemented in future
+}
+
+class ImageObject extends Attachable {
++ ImageObject()
++ Type : enum - ITEM, SPELL
+}
+
+class RoadMarker extends Attachable {
+- reward : ImageObject
+- image : Image
+
++ RoadMarker(name, description, reward)
++ get/set
+}
+
+class TextObject extends Attachable {
++ TextObject(name, description)
++ Type : enum - PRAYER, JOURNAL ENTRY
+}
+
+class MemoryDao {
+- build the data i want to write
+-read the data that i want to get.
+}
+
+class CharacterCreationMenu implements Menu {
+- welcomeMessage : String
+- firstMainQuest : MainQuest
+
++ CharacterCreationMenu()
++ saveName(name) : boolean
++ createFirstMainQuest() : boolean
++ moveToMainMenu()
+}
+
+class MainMenu implements Menu {
+- user : User
+- welcomeMessage : String
+- summary : String
+- mainQuest : MainQuest
+- sideQuests : sideQuestMenu
+- settingsMenu : SettingsMenu
+
++ Main(user)
+}
+
+Interface Menu {
+}
+
+class SettingsMenu implements Menu {
+- name : String
+
++ SettingsMenu()
++ editName()
++ editSummary()
++ editMainQuest()
++ editQuest(name : String)
++ editAttachable()
+}
+
+class SideQuestsMenu implements Menu {
+table of sideQuest objects?
+}
+
+class MainQuest extends Quest {
+- marker1 : RoadMarker
+- marker2 : RoadMarker
+- marker3 : RoadMarker
+
++ MainQuest(name, destination)
++ get/set
++ getAll() : List<RoadMarker>
+}
+
+abstract Quest {
+- name : String
+- destination : String
+
++ Quest(name, destination)
++ get/set
+}
+
+class SideQuest extends Quest {
+- marker1 : RoadMarker
+- marker2 : RoadMarker
+
++ SideQuest(name, destination)
++ get/set
++ getAll() : List<RoadMarker>
+}
+
+class User {
+- userName : String
+- inventory : List<ImageObject>
+- mainQuest : MainQuest
+- summary : AutoSummary
+
++ User(name)
++ get/set
++ add/remove : inventory
+}
+
+class Main {
++ main
+}
+
+class Login {
+- to be implemented in future
+}
+class UserTable {
+- to be implemented in future
+}
+class Skills/LevelSystem {
+- to be implemented in future
+}
+
+
+User -- MainMenu
+
+ImageObject -- MainQuest
+ImageObject -- SideQuest
+SettingsMenu -- MemoryDao
+
+
+
+Main -- CharacterCreationMenu
+Main -- MainMenu
+MainMenu -- MainQuest
+MainMenu -- SideQuestsMenu
+MainMenu -- SettingsMenu
+SideQuestsMenu -- SideQuest
+MainQuest -- RoadMarker
+SideQuest -- RoadMarker
+MainQuest -- TextObject
+SideQuest -- TextObject
+
+@enduml
